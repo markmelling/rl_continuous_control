@@ -3,14 +3,12 @@ import random
 import copy
 from collections import namedtuple, deque
 
-from lib.model import Deterministic_ActorCritic_Net, Critic
-
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
 import torch.optim as optim
 
-from lib.model import Deterministic_ActorCritic_Net
+from lib.model import TD3_Net
 from lib.replay_buffer import ReplayBuffer, UniformReplay
 from lib.utils import *
 from lib.base_agent import BaseAgent
@@ -18,6 +16,7 @@ from lib.base_agent import BaseAgent
 # BUFFER_SIZE = int(1e5)  # replay buffer size
 BUFFER_SIZE = int(1e6)  # MM replay buffer size
 BATCH_SIZE = 128        # minibatch size - MM is 100
+# BATCH_SIZE = 100
 GAMMA = 0.99            # discount factor - MM is same 
 # TAU = 1e-3              # for soft update of target parameters
 TAU = 5e-3              # MM Changed to match 
@@ -32,7 +31,8 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # LEARN_EVERY_STEPS = 20
 LEARN_EVERY_STEPS = 1
 
-class DDPG_Agent(BaseAgent):
+
+class TD3_Agent(BaseAgent):
     """Interacts with and learns from the environment."""
     
     def __init__(self,
@@ -42,7 +42,11 @@ class DDPG_Agent(BaseAgent):
                  random_seed,
                  action_low=-1.0,
                  action_high=1.0,
-                 warm_up=int(1e4)):
+                 warm_up=int(1e4),
+                 td3_noise=0.2,
+                 td3_noise_clip=0.5,
+                 td3_delay=2,
+                 ):
         """Initialize an Agent object.
         
         Params
@@ -58,24 +62,26 @@ class DDPG_Agent(BaseAgent):
         self.action_low = action_low
         self.action_high = action_high
         self.warm_up = warm_up
+        self.td3_noise = td3_noise
+        self.td3_noise_clip = td3_noise_clip
+        self.td3_delay = td3_delay
         self.total_steps = 0
 
         def create_nn():
-            return Deterministic_ActorCritic_Net(state_size, action_size)
+            return TD3_Net(state_size, action_size)
 
         self.local_network = create_nn()
         self.target_network = create_nn()
         self.target_network.load_state_dict(self.local_network.state_dict())
 
         # NOISE PROCESS
-        self.noise = OrnsteinUhlenbeckProcess(
-            size=(self.action_size,), std=LinearSchedule(0.2))
+        self.noise = GaussianProcess(
+            size=(action_size,), std=LinearSchedule(0.1))
 
         # Replay memory
-        self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, random_seed)
-        # self.memory = UniformReplay(memory_size=BUFFER_SIZE, batch_size=BATCH_SIZE)
+        #self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, random_seed)
+        self.memory = UniformReplay(memory_size=BUFFER_SIZE, batch_size=BATCH_SIZE)
 
-    
     # given a state what should be the action?
     def act(self, state, train=True):
         """Returns actions for given state as per current policy."""
@@ -123,37 +129,39 @@ class DDPG_Agent(BaseAgent):
         """
         states, actions, rewards, next_states, dones = experiences
 
-        # ---------------------------- update critic ---------------------------- #
-        # Get predicted next-state actions and Q values from target models
-        actions_next = self.target_network.actor(next_states) # (1)
-        Q_targets_next = self.target_network.critic(next_states, actions_next) # (2)
+        actions_next = self.target_network(next_states) 
+        noise = torch.randn_like(actions_next).mul(self.td3_noise)
+        noise = noise.clamp(-self.td3_noise_clip, self.td3_noise_clip)
 
-        Q_targets = rewards + (gamma * Q_targets_next * (1 - dones)) 
-        # Compute critic loss
-        Q_expected = self.local_network.critic(states, actions)
-        # critic_loss = F.mse_loss(Q_expected, Q_targets) # (5)
-        critic_loss = (Q_expected - Q_targets).pow(2).mul(0.5).sum(-1).mean() 
+        actions_next = (actions_next + noise).clamp(self.action_low, self.action_high)
+
+        q_1, q_2 = self.target_network.q(next_states, actions_next)
+        target = rewards + (gamma * (1 - dones) * torch.min(q_1, q_2))
+        target = target.detach()
+
+        q_1, q_2 = self.local_network.q(states, actions)
+        critic_loss = F.mse_loss(q_1, target) + F.mse_loss(q_2, target)
+
         # Minimize the loss
         self.local_network.zero_grad()
         critic_loss.backward()
         self.local_network.critic_optimizer.step()
 
-        # ---------------------------- update actor ---------------------------- #
-        # Compute actor loss
-        actions_pred = self.local_network.actor(states)
-        actor_loss = -self.local_network.critic(states.detach(), actions_pred).mean()
-        # Minimize the loss
-        self.local_network.zero_grad()
-        actor_loss.backward()
-        self.local_network.actor_optimizer.step()
+        self.soft_update(self.target_network, self.local_network, TAU)
 
-        # ----------------------- update target networks ----------------------- #
-        self.soft_update(self.target_network, self.local_network, TAU) 
+        if self.total_steps % self.td3_delay:
+            action = self.local_network(states)
+            policy_loss = -self.local_network.q(states, action)[0].mean()
+
+            self.local_network.zero_grad()
+            policy_loss.backward()
+            self.local_network.actor_optimizer.step()
+
+            self.soft_update(self.target_network, self.local_network, TAU)
 
     def soft_update(self, target, src, tau):
         for target_param, param in zip(target.parameters(), src.parameters()):
             target_param.detach_()
             target_param.copy_(target_param * (1.0 - tau) +
                                param * tau)
-
 
