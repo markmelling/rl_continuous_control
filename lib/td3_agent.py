@@ -9,7 +9,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 from lib.model import TD3_Net
-from lib.replay_buffer import ReplayBuffer, UniformReplay
+from lib.replay_buffer import ReplayBuffer
 from lib.utils import *
 from lib.base_agent import BaseAgent
 
@@ -79,8 +79,7 @@ class TD3_Agent(BaseAgent):
             size=(action_size,), std=LinearSchedule(0.1))
 
         # Replay memory
-        #self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, random_seed)
-        self.memory = UniformReplay(memory_size=BUFFER_SIZE, batch_size=BATCH_SIZE)
+        self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, random_seed)
 
     # given a state what should be the action?
     def act(self, state, train=True):
