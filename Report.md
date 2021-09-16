@@ -129,7 +129,6 @@ The DDPG agent produced an average score of 36.24 over 100 episodes
 
 The DDPG agent takes 480,000 steps to produce an average score of > 30
 
-#### Distribution of episode rewards over 100 test episodes
 ![test scores][image3]
 
 #### Plot of rewards during training
