@@ -3,8 +3,6 @@ import random
 import copy
 from collections import namedtuple, deque
 
-from lib.model import Deterministic_ActorCritic_Net, Critic
-
 import torch
 import torch.nn.functional as F
 import torch.nn as nn

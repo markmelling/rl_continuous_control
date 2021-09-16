@@ -4,6 +4,14 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from lib.utils import *
+
+def layer_init(layer, w_scale=1.0):
+    nn.init.orthogonal_(layer.weight.data)
+    layer.weight.data.mul_(w_scale)
+    nn.init.constant_(layer.bias.data, 0)
+    return layer
+
 class FC_Core(nn.Module):
     def __init__(self, state_size, hidden_units=(64, 64), activation_fn=F.relu):
         super(FC_Core, self).__init__()

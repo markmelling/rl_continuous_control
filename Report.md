@@ -16,10 +16,22 @@ Both algorithms were successfully able to achieve an average reward of > 30 for 
 
 
 ### Implementation
-Where are the files
-What is in the files
 
-where are the models
+The code to train or test either of the implemented models can either be run from the command line or from a Jupyter notebook (see `Continuous_Control.ipynb`)
+
+run_agent.py in the root of this repo is used to test or evaluate the models.
+
+All other source files are in the lib folder
+
+- environments.py - provides a wrapper around a unity environment
+- ddpg_agent.py - DDPG_Agent class implements the DDPG algorithm
+- td3_agent.py - TD3_Agent class implements the DDPG algorithm
+- model.py 
+  - Implementations of a Deterministic Actor Critic Neural Network 
+  - Implementations of a Neural Network supporting TD3
+- replay_buffer.py - experience replay buffer
+- utils - various useful functions and noise classes
+
 
 ### Deep Deterministic Policy Gradient
 Deep Deterministic Policy Gradient is a model-free, off-policy algorithm for learning continuous actions. It combines Deterministic Policy Gradient and Deep Q-Network. 
@@ -68,7 +80,7 @@ TD3 builds on DDPG, like DDPG it is an model-free, off-policy algorithm that sup
 - The policy (and target network) are updated less frequently (I followed the recommended one policy update for two Q function updates)
 - Adds noise to the target action to make it harder to exploit Q-function errors
 
-The TD3 algorithm significantly reduced the time to 'solve' environment. The TD3 was a lot more stable and took about 90,000 steps to reach a score of 30+ wheras DDPG was a lot less stable and took over 800,000 steps to reliably achieve a score of over 30.
+A gaussian process is used for generating noise.
 
 #### Plot of rewards
 
@@ -90,9 +102,14 @@ The TD3 algorithm significantly reduced the time to 'solve' environment. The TD3
 - Actor learning rate: 1e-3
 - critic hidden units = 400, 300
 - Critic learning rate: 1e-3
+### Comparison of DDPG and TD3
+The TD3 algorithm significantly reduced the time to 'solve' the environment. TD3 was a lot more stable and took about 90,000 steps to reach a score of 30+ wheras with DDPG there was a lot more variation in the scores during training and it took over 800,000 steps to reliably achieve a score of over 30.
+
 
 ### Future work
-Other future work considered:
+The length of time that it takes to train a model is considerable on my current setup and really is a barrier to testing and experimenting. I need to investigate both improved local versions (faster computer) and 'in the cloud' options, both in terms of the reduction in time for training to take and cost.
+
+Other future work worth considering:
 #### Multi-agents and additional algorithms
 Add support for multiple agents and implement some of the other well know algorithms and compare their performance (e.g. PPO and A2C)
 
