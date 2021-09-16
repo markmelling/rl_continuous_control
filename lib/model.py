@@ -12,6 +12,8 @@ def layer_init(layer, w_scale=1.0):
     nn.init.constant_(layer.bias.data, 0)
     return layer
 
+# Although not the same as FCBody in https://github.com/ShangtongZhang/DeepRL
+# The idea of separating this part of the NN came from this repo
 class FC_Core(nn.Module):
     def __init__(self, state_size, hidden_units=(64, 64), activation_fn=F.relu):
         super(FC_Core, self).__init__()
@@ -29,6 +31,8 @@ class FC_Core(nn.Module):
         return x
 
 
+# Although not the same as in https://github.com/ShangtongZhang/DeepRL
+# The idea of creating a single 'ActorCritic' network came from this repo
 class Deterministic_ActorCritic_Net(nn.Module):
     def __init__(self,
                  state_size,

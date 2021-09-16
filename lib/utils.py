@@ -6,6 +6,7 @@ import torch.nn as nn
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+# Copied from https://github.com/ShangtongZhang/DeepRL
 def tensor(x):
     if isinstance(x, torch.Tensor):
         return x
@@ -16,28 +17,8 @@ def tensor(x):
 def to_np(t):
     return t.cpu().detach().numpy()
 
-class OUNoise:
-    """Ornstein-Uhlenbeck process."""
 
-    def __init__(self, size, seed, mu=0., theta=0.15, sigma=0.2):
-        """Initialize parameters and noise process."""
-        self.mu = mu * np.ones(size)
-        self.theta = theta
-        self.sigma = sigma
-        self.seed = random.seed(seed)
-        self.reset()
-
-    def reset(self):
-        """Reset the internal state (= noise) to mean (mu)."""
-        self.state = copy.copy(self.mu)
-
-    def sample(self):
-        """Update internal state and return it as a noise sample."""
-        x = self.state
-        dx = self.theta * (self.mu - x) + self.sigma * np.array([random.random() for i in range(len(x))])
-        self.state = x + dx
-        return self.state
-
+# Copied from https://github.com/ShangtongZhang/DeepRL
 class LinearSchedule:
     def __init__(self, start, end=None, steps=None):
         if end is None:
@@ -56,6 +37,7 @@ class LinearSchedule:
         self.current = self.bound(self.current + self.inc * steps, self.end)
         return val
 
+# Copied from https://github.com/ShangtongZhang/DeepRL
 class OrnsteinUhlenbeckProcess():
     def __init__(self, size, std, theta=.15, dt=1e-2, x0=None):
         self.theta = theta
@@ -76,6 +58,7 @@ class OrnsteinUhlenbeckProcess():
         self.x_prev = self.x0 if self.x0 is not None else np.zeros(self.size)
 
 
+# Copied from https://github.com/ShangtongZhang/DeepRL
 class GaussianProcess():
     def __init__(self, size, std):
         self.size = size
