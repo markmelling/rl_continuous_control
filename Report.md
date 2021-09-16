@@ -12,7 +12,7 @@ This project uses the [Reacher](https://github.com/Unity-Technologies/ml-agents/
 
 ### Solving the Environment
 
-This project uses the single variant of the Unity environment and demonstrates the solution using two differen algorithms:
+This project uses the single agent variant of the Unity environment and demonstrates the solution using two different algorithms:
 - Deep Deterministic Policy Gradient (DDPG) (https://arxiv.org/abs/1509.02971v6)
 - Twin Delayed Deep Deterministic (TD3) (https://arxiv.org/abs/1802.09477v3)
 
@@ -29,7 +29,7 @@ All other source files are in the lib folder
 
 - environments.py - provides a wrapper around a unity environment
 - ddpg_agent.py - DDPG_Agent class implements the DDPG algorithm
-- td3_agent.py - TD3_Agent class implements the DDPG algorithm
+- td3_agent.py - TD3_Agent class implements the TD3 algorithm
 - model.py 
   - Implementations of a Deterministic Actor Critic Neural Network 
   - Implementations of a Neural Network supporting TD3
@@ -51,9 +51,9 @@ The basic idea is to split the model in two: one for computing an action based o
      
 Gradient ascent (not descent) is used to maximise the Q-value and update the weights.
 
-For DDPG it also uses a target Actor-Critic network to add stability to the training. The target network's weights are gradually updated from the network.
+For DDPG it also uses a target Actor-Critic network to add stability to the training. The target network's weights are gradually updated from the network (see the `soft_update method` of the agent class).
 
-An experience replay buffer is used to learn from previous experiences. These samples are randomly sampled and used to learn from.
+An experience replay buffer (`ReplayBuffer`) is used to learn from previous experiences. These samples are randomly sampled and used to learn from.
 
 An Ornstein-Uhlenbeck process is used for generating noise to implement better exploration by the Actor network.
 

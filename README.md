@@ -18,7 +18,7 @@ The observation space consists of 33 variables corresponding to position, rotati
 
 ### Solving the Environment
 
-This project uses the single agent variant of the Unity environment and demonstrates the solution using two differen algorithms:
+This project uses the single agent variant of the Unity environment and demonstrates the solution using two different algorithms:
 - Deep Deterministic Policy Gradient (DDPG) (https://arxiv.org/abs/1509.02971v6)
 - Twin Delayed Deep Deterministic (TD3) (https://arxiv.org/abs/1802.09477v3)
 
