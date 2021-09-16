@@ -28,7 +28,7 @@ Both algorithms were successfully able to achieve an average reward of > 30 for 
 ## Getting Started
 
 ### Installing the dependencies
-To run the code either from the command line or a Jupyter Notebooks you need make sure you have the Unity environment, Python and the required libraries installed.
+To run the code either from the command line or a Jupyter Notebook you need to make sure you have the Unity environment, Python and the required libraries installed.
 
 #### Installing Python
 The easiest way to install Python, or the correct version of Python, is to use conda, and the easiest way to install conda is to install miniconda.
