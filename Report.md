@@ -86,7 +86,7 @@ The model weights for a DDPG agent that produces scores of 30+ is stored in `Rea
 
 ### Twin Delayed Deep Deterministic 
 TD3 builds on DDPG, like DDPG it is an model-free, off-policy algorithm that supports continuous action spaces. DDPG can over estimate Q-values which leads to the policy breaking, to tackle this TD3 introduces three improvements:
-- TD3 uses 2 Q-learning networks and in calculating the Bellman Optimality Equation it takes the minimium of these two networks (target = rewards + (gamma * (1 - dones) * torch.min(q_1, q_2)))
+- TD3 uses 2 Q-learning networks and in calculating the Bellman Optimality Equation it takes the minimium of these two networks `target = rewards + (gamma * (1 - dones) * torch.min(q_1, q_2))`
 - The policy (and target network) are updated less frequently (I followed the recommended one policy update for two Q function updates)
 - Adds noise to the target action to make it harder to exploit Q-function errors
 
