@@ -5,12 +5,12 @@
 
 # Reinforcement Learning - Continuous Control
 
-### Introduction
+## Introduction
 
 This project uses the [Reacher](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#reacher) environment to demonstrate ML agents solving an environment with a coninuous action space.
 
 
-### Solving the Environment
+## Solving the Environment
 
 This project uses the single agent variant of the Unity environment and demonstrates the solution using two different algorithms:
 - Deep Deterministic Policy Gradient (DDPG) (https://arxiv.org/abs/1509.02971v6)
@@ -19,7 +19,7 @@ This project uses the single agent variant of the Unity environment and demonstr
 Both algorithms were successfully able to achieve an average reward of > 30 for 100 episodes.
 
 
-### Implementation
+## Implementation
 
 The code to train or test either of the implemented models can either be run from the command line or from a Jupyter notebook (see `Continuous_Control.ipynb`)
 
@@ -36,6 +36,25 @@ All other source files are in the lib folder
 - `replay_buffer.py` - experience replay buffer
 - `utils.py` - various useful functions and noise classes
 
+
+The agents are implemented as classes (DDPG_Agent and TD3_Agent), they both inherit from BaseAgent which just supports saving and loading the models.
+
+The agent is responsible for creating the appropriate neural network (defined in model.py)
+
+The agents provide a simple interface:
+
+- act(state) 
+This returns an action (which when training will include some noise)
+
+- step(self, state, action, reward, next_state, done)
+Adds experience to the replay buffer and then samples the replay buffer to learn from experiences
+
+- learn(experiences, gamma)
+Implements the relevent algorithm for updating the neural network and performing a soft update on the target network. 
+
+## Learning Algorithms
+
+There are two learning algorithms implemented, Deep Deterministic Policy Gradient and Twin Delayed Deep Deterministic
 
 ### Deep Deterministic Policy Gradient
 Deep Deterministic Policy Gradient is a model-free, off-policy algorithm for learning continuous actions. It combines Deterministic Policy Gradient and Deep Q-Network. 
@@ -68,20 +87,10 @@ An Ornstein-Uhlenbeck process is used for generating noise to implement better e
 - Optimizer: Adam, learning_rate: 1e-3
 
 #### Neural network architecture
-- actor hidden units = 400, 300
+- Actor network has 2 hidden layers with 400 and 300 units respectively
 - Actor learning rate: 1e-3
-- critic hidden units = 400, 300
+- Critic network has 2 hidden layers with 400 and 300 units respectively
 - Critic learning rate: 1e-3
-
-#### Plot of rewards during training
-![Learning rate][image1]
-
-
-#### Distribution of episode rewards over 100 test episodes
-![test scores][image3]
-
-#### Model weights
-The model weights for a DDPG agent that produces scores of 30+ is stored in `Reacher_DDPG_Trained.pth`
 
 
 ### Twin Delayed Deep Deterministic 
@@ -106,10 +115,35 @@ A gaussian process is used for generating noise.
 - delay in updating the policy and target network: 2
 
 #### Neural network architecture
-- actor hidden units = 400, 300
+- Actor network has 2 hidden layers with 400 and 300 units respectively
 - Actor learning rate: 1e-3
-- critic hidden units = 400, 300
+- Critic network has 2 hidden layers with 400 and 300 units respectively
 - Critic learning rate: 1e-3
+
+
+## Plot of rewards
+
+### DDPG
+
+The DDPG agent produced an average score of 36.24 over 100 episodes
+
+The DDPG agent takes 480,000 steps to produce an average score of > 30
+
+#### Distribution of episode rewards over 100 test episodes
+![test scores][image3]
+
+#### Plot of rewards during training
+![Learning rate][image1]
+
+
+#### Model weights
+The model weights for a DDPG agent that produces scores of 30+ is stored in `Reacher_DDPG_Trained.pth`
+
+### TD3
+
+The TD3 agent produced an average score of 36.92 over 100 episodes
+
+The TD3 agent takes 100,000 steps to produce an average score of > 30
 
 #### Plot of rewards during training
 ![Learning rate][image2]
@@ -122,7 +156,7 @@ The model weights for a DDPG agent that produces scores of 30+ is stored in `Rea
 
 
 ### Comparison of DDPG and TD3
-The TD3 algorithm significantly reduced the time to 'solve' the environment. TD3 was a lot more stable and took about 90,000 steps to reach a score of 30+ whereas with DDPG there was a lot more variation in the scores during training and it took over 800,000 steps to reliably achieve a score of over 30.
+The TD3 algorithm significantly reduced the time to 'solve' the environment. TD3 was a lot more stable and took about 100,000 steps to reach a score of 30+ whereas with DDPG there was a lot more variation in the scores during training and it took 480,000 steps to achieve a score of over 30.
 
 
 ### Future work
