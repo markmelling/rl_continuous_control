@@ -1,6 +1,7 @@
-[image1]: https://github.com/markmelling/rl_continuous_control/blob/8a5b2ab8fcffa43861ab2a2760718240690b568f/ddpg_learning_rate.png
-
-[image2]: 
+[image1]: https://raw.githubusercontent.com/markmelling/rl_continuous_control/main/ddpg_learning_rate.png
+[image2]: https://raw.githubusercontent.com/markmelling/rl_continuous_control/main/td3_learning_rate.png 
+[image3]: https://raw.githubusercontent.com/markmelling/rl_continuous_control/main/ddpg_test_scores.png
+[image4]: https://raw.githubusercontent.com/markmelling/rl_continuous_control/main/td3_test_scores.png
 
 # Reinforcement Learning - Continuous Control
 
@@ -72,9 +73,12 @@ An Ornstein-Uhlenbeck process is used for generating noise to implement better e
 - critic hidden units = 400, 300
 - Critic learning rate: 1e-3
 
-#### Plot of rewards
+#### Plot of rewards during training
 ![Learning rate][image1]
 
+
+#### Distribution of episode rewards over 100 test episodes
+[image3]
 
 #### Model weights
 The model weights for a DDPG agent that produces scores of 30+ is stored in `Reacher_DDPG_Trained.pth`
@@ -107,8 +111,11 @@ A gaussian process is used for generating noise.
 - critic hidden units = 400, 300
 - Critic learning rate: 1e-3
 
-#### Plot of rewards
+#### Plot of rewards during training
 ![Learning rate][image2]
+
+#### Distribution of episode rewards over 100 test episodes
+[image4]
 
 #### Model weights
 The model weights for a DDPG agent that produces scores of 30+ is stored in `Reacher_TD3_Trained.pth`
