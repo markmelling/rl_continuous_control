@@ -122,11 +122,11 @@ The model weights for a DDPG agent that produces scores of 30+ is stored in `Rea
 
 
 ### Comparison of DDPG and TD3
-The TD3 algorithm significantly reduced the time to 'solve' the environment. TD3 was a lot more stable and took about 90,000 steps to reach a score of 30+ wheras with DDPG there was a lot more variation in the scores during training and it took over 800,000 steps to reliably achieve a score of over 30.
+The TD3 algorithm significantly reduced the time to 'solve' the environment. TD3 was a lot more stable and took about 90,000 steps to reach a score of 30+ whereas with DDPG there was a lot more variation in the scores during training and it took over 800,000 steps to reliably achieve a score of over 30.
 
 
 ### Future work
-The length of time that it takes to train a model is considerable on my current setup and really is a barrier to testing and experimenting. I need to investigate both improved local versions (faster computer) and 'in the cloud' options, both in terms of the reduction in time for training to take and cost.
+The length of time that it takes to train a model is considerable on my current setup and really is a barrier to testing and experimenting. I need to investigate both improved local versions (faster computer) and 'in the cloud' options, both in terms of the reduction in time for training and cost.
 
 Other future work worth considering:
 #### Multi-agents and additional algorithms
@@ -136,7 +136,7 @@ Add support for multiple agents and implement some of the other well know algori
 Experiment with prioritised experience replay buffer.
 
 
-### Glossary 
+## Glossary 
 
 #### Model-free
 A model-free algorithm does not use a model of the environment. That is it doesn't use a function which predicts state transitions or rewards.
