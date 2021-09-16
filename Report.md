@@ -1,4 +1,6 @@
+[image1]: https://github.com/markmelling/rl_continuous_control/blob/8a5b2ab8fcffa43861ab2a2760718240690b568f/ddpg_learning_rate.png
 
+[image2]: 
 # Reinforcement Learning - Continuous Control
 
 ### Introduction
@@ -70,8 +72,8 @@ An Ornstein-Uhlenbeck process is used for generating noise to implement better e
 - Critic learning rate: 1e-3
 
 #### Plot of rewards
+![Learning rate][image1]
 
-As can be seen from the chart  
 
 
 ### Twin Delayed Deep Deterministic 
@@ -83,6 +85,7 @@ TD3 builds on DDPG, like DDPG it is an model-free, off-policy algorithm that sup
 A gaussian process is used for generating noise.
 
 #### Plot of rewards
+![Learning rate][image1]
 
 #### Hyper-pararmeters
 
