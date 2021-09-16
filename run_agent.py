@@ -34,7 +34,7 @@ def eval_episodes(env, agent, num_episodes=20):
         t1 = time.time()
         record = record.append(dict(time=round(t1-t0),
                                     score=round(np.sum(episode_rewards), 2)), ignore_index=True)
-        record.to_csv(f'{agent.name}-evaluate.csv')
+        record.to_csv(f'{agent.name}-test-results.csv')
     return np.mean(total_rewards)
 
 
