@@ -1,6 +1,7 @@
 [image1]: https://github.com/markmelling/rl_continuous_control/blob/8a5b2ab8fcffa43861ab2a2760718240690b568f/ddpg_learning_rate.png
 
 [image2]: 
+
 # Reinforcement Learning - Continuous Control
 
 ### Introduction
@@ -75,6 +76,9 @@ An Ornstein-Uhlenbeck process is used for generating noise to implement better e
 ![Learning rate][image1]
 
 
+#### Model weights
+The model weights for a DDPG agent that produces scores of 30+ is stored in `Reacher_DDPG_Trained.pth`
+
 
 ### Twin Delayed Deep Deterministic 
 TD3 builds on DDPG, like DDPG it is an model-free, off-policy algorithm that supports continuous action spaces. DDPG can over estimate Q-values which leads to the policy breaking, to tackle this TD3 introduces three improvements:
@@ -83,9 +87,6 @@ TD3 builds on DDPG, like DDPG it is an model-free, off-policy algorithm that sup
 - Adds noise to the target action to make it harder to exploit Q-function errors
 
 A gaussian process is used for generating noise.
-
-#### Plot of rewards
-![Learning rate][image1]
 
 #### Hyper-pararmeters
 
@@ -105,6 +106,14 @@ A gaussian process is used for generating noise.
 - Actor learning rate: 1e-3
 - critic hidden units = 400, 300
 - Critic learning rate: 1e-3
+
+#### Plot of rewards
+![Learning rate][image2]
+
+#### Model weights
+The model weights for a DDPG agent that produces scores of 30+ is stored in `Reacher_TD3_Trained.pth`
+
+
 ### Comparison of DDPG and TD3
 The TD3 algorithm significantly reduced the time to 'solve' the environment. TD3 was a lot more stable and took about 90,000 steps to reach a score of 30+ wheras with DDPG there was a lot more variation in the scores during training and it took over 800,000 steps to reliably achieve a score of over 30.
 

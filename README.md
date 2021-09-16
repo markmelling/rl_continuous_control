@@ -18,14 +18,47 @@ The observation space consists of 33 variables corresponding to position, rotati
 
 ### Solving the Environment
 
-This project uses the single variant of the Unity environment and demonstrates the solution using two differen algorithms:
+This project uses the single agent variant of the Unity environment and demonstrates the solution using two differen algorithms:
 - Deep Deterministic Policy Gradient (DDPG) (https://arxiv.org/abs/1509.02971v6)
 - Twin Delayed Deep Deterministic (TD3) (https://arxiv.org/abs/1802.09477v3)
 
 Both algorithms were successfully able to achieve an average reward of > 30 for 100 episodes.
 
 
-### Getting Started
+## Getting Started
+
+### Installing the dependencies
+To run the code either from the command line or a Jupyter Notebooks you need make sure you have the Unity environment, Python and the required libraries installed.
+
+#### Installing Python
+The easiest way to install Python, or the correct version of Python, is to use conda, and the easiest way to install conda is to install miniconda.
+
+If you don't have conda installed then follow the instructions here: [miniconda](https://docs.conda.io/en/latest/miniconda.html)
+
+With conda installed, create and activate a conda environment which uses python 3.6 by entering the following commands in a terminal window
+
+- For Linux or Mac
+```shell
+conda create --name drlnd python=3.6
+source activate drlnd
+```
+
+- For Windows
+```shell
+conda create --name drlnd python=3.6
+activate drlnd
+```
+
+#### Install the required python libraries
+Clone this repository if you've not done it already, then navigate to the python subdirectory and install the dependencies by entering the following commands in a terminal window
+
+```shell
+git clone https://github.com/markmelling/rl_continuous_control
+cd rl_continuous_control
+pip install .
+```
+
+#### Install the pre-prepared Unity environment
 
 1. Download the environment from one of the links below.  You need only select the environment that matches your operating system:
 
@@ -39,10 +72,10 @@ Both algorithms were successfully able to achieve an average reward of > 30 for 
 
     (_For AWS_) If you'd like to train the agent on AWS (and have not [enabled a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md)), then please use [this link](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/one_agent/Reacher_Linux_NoVis.zip) (version 1) or [this link](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Linux_NoVis.zip) (version 2) to obtain the "headless" version of the environment.  You will **not** be able to watch the agent without enabling a virtual screen, but you will be able to train the agent.  (_To watch the agent, you should follow the instructions to [enable a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md), and then download the environment for the **Linux** operating system above._)
 
-2. Place the file in the DRLND GitHub repository, in the `p2_continuous-control/` folder, and unzip (or decompress) the file. 
+2. Place the file in rl_continuous_control and unzip (or decompress) the file. 
 
 
-### Instructions
+## Instructions
 
 You can train and evaluate the agents either from the notebook `Continuous_Control.ipynb` or from the command line (I've not tried it on Windows)
 
@@ -50,7 +83,6 @@ For the notebook follow the instructions there.
 
 For the command line to train an agent you can run:
 ```
-conda activate drlnd
 
 # for DDPG
 python train.py -m train -a ddpg -n 'The_name_of_your_choosing'
@@ -65,7 +97,6 @@ The results of intermidiate evaluations are stored in a csv file of the same bas
 To run an evaluation test from the command line:
 
 ```
-conda activate drlnd
 
 # for DDPG
 python train.py -m test -a ddpg -n 'The_name_of_your_choosing'
@@ -77,5 +108,21 @@ python train.py -m test -a 'td3 -n 'The_name_of_your_choosing'
 This will return the average score for 100 episodes
 
 
-#### Pre-trained models
-What files, how to run
+### Pre-trained models
+There are pre-trained models that produce 30+ rewards for both DDPG and TD3
+- `Reacher_DDPG_Trained.pth`
+- `Reacher_TD3_Trained.pth`
+
+## Source code
+Outside of the `Continuous_Control.ipynb` notebook there are the following python files:
+- run_agent.py (can be either run from the command line or from a notebook)
+All other source code files are in the lib folder
+
+- environments.py - provides a wrapper around a unity environment
+- ddpg_agent.py - DDPG_Agent class implements the DDPG algorithm
+- td3_agent.py - TD3_Agent class implements the DDPG algorithm
+- model.py 
+  - Implementations of a Deterministic Actor Critic Neural Network 
+  - Implementations of a Neural Network supporting TD3
+- replay_buffer.py - experience replay buffer
+- utils - various useful functions and noise classes
