@@ -23,18 +23,18 @@ Both algorithms were successfully able to achieve an average reward of > 30 for 
 
 The code to train or test either of the implemented models can either be run from the command line or from a Jupyter notebook (see `Continuous_Control.ipynb`)
 
-run_agent.py in the root of this repo is used to test or evaluate the models.
+`run_agent.py` in the root of this repo is used to test or evaluate the models.
 
 All other source files are in the lib folder
 
-- environments.py - provides a wrapper around a unity environment
-- ddpg_agent.py - DDPG_Agent class implements the DDPG algorithm
-- td3_agent.py - TD3_Agent class implements the TD3 algorithm
-- model.py 
+- `environments.py` - provides a wrapper around a unity environment
+- `ddpg_agent.py` - DDPG_Agent class implements the DDPG algorithm
+- `td3_agent.py` - TD3_Agent class implements the TD3 algorithm
+- `model.py` 
   - Implementations of a Deterministic Actor Critic Neural Network 
   - Implementations of a Neural Network supporting TD3
-- replay_buffer.py - experience replay buffer
-- utils - various useful functions and noise classes
+- `replay_buffer.py` - experience replay buffer
+- `utils.py` - various useful functions and noise classes
 
 
 ### Deep Deterministic Policy Gradient
