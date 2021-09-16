@@ -78,7 +78,7 @@ An Ornstein-Uhlenbeck process is used for generating noise to implement better e
 
 
 #### Distribution of episode rewards over 100 test episodes
-[image3]
+![test scores][image3]
 
 #### Model weights
 The model weights for a DDPG agent that produces scores of 30+ is stored in `Reacher_DDPG_Trained.pth`
@@ -115,7 +115,7 @@ A gaussian process is used for generating noise.
 ![Learning rate][image2]
 
 #### Distribution of episode rewards over 100 test episodes
-[image4]
+![test scores][image4]
 
 #### Model weights
 The model weights for a DDPG agent that produces scores of 30+ is stored in `Reacher_TD3_Trained.pth`
